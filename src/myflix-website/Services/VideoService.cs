@@ -15,11 +15,17 @@ namespace myflix_website.Services
 
         public async Task<List<Video>> GetVideoAsync()
         {
-            var response = await _httpClient.GetAsync("http://http://35.184.60.220/api/Videos");
+            var response = await _httpClient.GetAsync("http://35.184.60.220/api/Videos");
             response.EnsureSuccessStatusCode();
 
             var jsonString = await response.Content.ReadAsStringAsync();
-            var videos = JsonSerializer.Deserialize<List<Video>>(jsonString);
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var videos = JsonSerializer.Deserialize<List<Video>>(jsonString, options);
 
             return videos;
         }
