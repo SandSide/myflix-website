@@ -18,7 +18,7 @@ namespace myflix_website.Controllers
         }
 
         [HttpGet("video/{filename}")]
-        public async Task<IActionResult> ViewVideo(string filename)
+        public async Task<IActionResult> Watch(string filename)
         {
             byte[] videoData = await _videoService.GetVideoFromUrlAsync(filename);
            
