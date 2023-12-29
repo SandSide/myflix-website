@@ -3,8 +3,11 @@ on:
     push:
         branches:
             - main
-            - feature/devops
             - cloud-deploy
+    pull_request:
+        branches:
+          - main
+          - cloud-deploy
 jobs:
     build:
         runs-on: ubuntu-latest
