@@ -29,5 +29,13 @@ namespace myflix_website.Services
 
             return videos;
         }
+
+        public async Task<byte[]> GetVideoFromUrlAsync(string url)
+        {
+            var response = await _httpClient.GetAsync("http://35.208.170.130/videos");
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsByteArrayAsync();
+        }
     }
 }
