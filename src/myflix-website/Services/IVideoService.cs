@@ -4,6 +4,6 @@ namespace myflix_website.Services
 {
     public interface IVideoService
     {
-        Task<List<Video>> GetVideoAsync();
+        Task<List<Video>> GetVideoCatalogueAsync();
     }
 }

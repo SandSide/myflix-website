@@ -13,9 +13,9 @@ namespace myflix_website.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<Video>> GetVideoAsync()
+        public async Task<List<Video>> GetVideoCatalogueAsync()
         {
-            var response = await _httpClient.GetAsync("http://35.184.60.220/api/Videos");
+            var response = await _httpClient.GetAsync("http://35.209.185.57/api/Videos");
             response.EnsureSuccessStatusCode();
 
             var jsonString = await response.Content.ReadAsStringAsync();

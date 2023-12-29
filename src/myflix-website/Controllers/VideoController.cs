@@ -13,7 +13,7 @@ namespace myflix_website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var videos = await _videoService.GetVideoAsync();
+            var videos = await _videoService.GetVideoCatalogueAsync();
             return View(videos);
         }
     }
