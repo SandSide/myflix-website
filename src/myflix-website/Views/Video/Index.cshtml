@@ -21,9 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Length)
             </th>
-@*             <th>
-                @Html.DisplayNameFor(model => model.VideoUrl)
-            </th> *@
             <th></th>
         </tr>
     </thead>
@@ -42,11 +39,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Length)
             </td>
-            <td>
+  @*           <td>
                 @Html.DisplayFor(modelItem => item.VideoUrl)
-            </td>
+            </td> *@
             <td>
-                @Html.ActionLink("Watch", "Watch", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Watch", "Watch", new { filename = item.VideoUrl })
             </td>
         </tr>
 }
