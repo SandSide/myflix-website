@@ -30,9 +30,9 @@ namespace myflix_website.Services
             return videos;
         }
 
-        public async Task<byte[]> GetVideoFromUrlAsync(string url)
+        public async Task<byte[]> GetVideoFromUrlAsync(string filename)
         {
-            var response = await _httpClient.GetAsync("http://35.208.170.130/videos");
+            var response = await _httpClient.GetAsync("http://35.208.170.130/videos/{filename}");
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsByteArrayAsync();
