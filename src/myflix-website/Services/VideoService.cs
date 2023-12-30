@@ -15,7 +15,7 @@ namespace myflix_website.Services
 
         public async Task<List<Video>> GetVideoCatalogueAsync()
         {
-            var response = await _httpClient.GetAsync("http://35.209.185.57/api/Videos");
+            var response = await _httpClient.GetAsync("http://34.41.242.43/gateway/video-catalogue");
             response.EnsureSuccessStatusCode();
 
             var jsonString = await response.Content.ReadAsStringAsync();
@@ -32,7 +32,7 @@ namespace myflix_website.Services
 
         public async Task<byte[]> GetVideoFromUrlAsync(string filename)
         {
-            var response = await _httpClient.GetAsync($"http://35.208.170.130/videos/{filename}");
+            var response = await _httpClient.GetAsync($"http://34.41.242.43/gateway/videos/{filename}");
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsByteArrayAsync();
