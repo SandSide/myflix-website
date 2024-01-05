@@ -7,15 +7,17 @@ namespace myflix_website.Services
     public class VideoService : IVideoService
     {
         private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
 
-        public VideoService(HttpClient httpClient)
+        public VideoService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
+            _configuration = configuration;
         }
 
         public async Task<List<Video>> GetVideoCatalogueAsync()
         {
-            var response = await _httpClient.GetAsync("http://35.209.118.200/gateway/video-catalogue");
+            var response = await _httpClient.GetAsync(_configuration["AppSettings:Urls:VideoCatalogue"]);
             response.EnsureSuccessStatusCode();
 
             var jsonString = await response.Content.ReadAsStringAsync();
@@ -32,7 +34,7 @@ namespace myflix_website.Services
 
         public async Task<byte[]> GetVideoFromUrlAsync(string filename)
         {
-            var response = await _httpClient.GetAsync($"http://35.209.118.200/gateway/videos/{filename}");
+            var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Video"]}/{filename}");
             response.EnsureSuccessStatusCode();
 
             return await response.Content.ReadAsByteArrayAsync();
