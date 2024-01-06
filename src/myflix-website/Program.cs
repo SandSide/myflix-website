@@ -4,9 +4,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpContextAccessor();
 
-//builder.Services.AddScoped<IVideoService, VideoService>();
 builder.Services.AddHttpClient<IVideoService, VideoService>();
+builder.Services.AddHttpClient<IAuthService, AuthService>();
+
+
+builder.Services.AddDistributedMemoryCache(); // Use an in-memory cache provider for session state
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout as needed
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
 var app = builder.Build();
@@ -16,9 +26,12 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 

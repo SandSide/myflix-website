@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Text.Json
+@{
+    var storedAccount = Context.Session.GetString("Account");
+    var isUserLoggedIn = !string.IsNullOrEmpty(storedAccount);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,6 +31,18 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Video" asp-action="Index">Video</a>
                         </li>
+                        @if (!isUserLoggedIn)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                        else
+                        {
+                            var account = JsonSerializer.Deserialize<AccountModel>(storedAccount);
+
+                            <l1>Welcome, @account.Username! </l1>
+                        }
                     </ul>
                 </div>
             </div>
