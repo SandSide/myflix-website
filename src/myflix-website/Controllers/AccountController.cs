@@ -27,9 +27,18 @@ namespace myflix_website.Controllers
         }
 
         [HttpPost]
-        public async void Login(LoginModel loginModel)
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             var result = await _authService.Login(loginModel);
+
+            if(result != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
 
         }
     }
