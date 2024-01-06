@@ -44,6 +44,12 @@ namespace myflix_website.Services
 
         public async Task<byte[]> GetVideoFromUrlAsync(string filename)
         {
+            // Get account auth token
+            var storedAccount = _httpContextAccessor.HttpContext.Session.GetString("Account");
+            var account = JsonSerializer.Deserialize<AccountModel>(storedAccount);
+
+            // Send request
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.AuthToken}");
             var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Video"]}/{filename}");
             response.EnsureSuccessStatusCode();
 
