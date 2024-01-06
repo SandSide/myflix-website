@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 
 //builder.Services.AddScoped<IVideoService, VideoService>();
 builder.Services.AddHttpClient<IVideoService, VideoService>();
-
+builder.Services.AddHttpClient<IAuthService, AuthService>();
 
 var app = builder.Build();
 

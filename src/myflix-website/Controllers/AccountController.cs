@@ -29,8 +29,7 @@ namespace myflix_website.Controllers
         [HttpPost]
         public async void Login(LoginModel loginModel)
         {
-            Console.WriteLine("LOGIN REQUEST");
-            //var result = await _authService.Login(loginModel);
+            var result = await _authService.Login(loginModel);
 
         }
     }
