@@ -14,7 +14,16 @@ namespace myflix_website.Controllers
         public async Task<IActionResult> Index()
         {
             var videos = await _videoService.GetVideoCatalogueAsync();
-            return View(videos);
+
+            if(videos != null)
+            {
+                return View(videos);
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+
         }
 
         [HttpGet("video/{filename}")]

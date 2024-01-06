@@ -8,28 +8,44 @@ namespace myflix_website.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public VideoService(HttpClient httpClient, IConfiguration configuration)
+        public VideoService(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<List<Video>> GetVideoCatalogueAsync()
         {
-            var response = await _httpClient.GetAsync(_configuration["AppSettings:Urls:VideoCatalogue"]);
-            response.EnsureSuccessStatusCode();
 
-            var jsonString = await response.Content.ReadAsStringAsync();
-
-            var options = new JsonSerializerOptions
+            try
             {
-                PropertyNameCaseInsensitive = true
-            };
+                var storedAccount = _httpContextAccessor.HttpContext.Session.GetString("Account");
+                var account = JsonSerializer.Deserialize<AccountModel>(storedAccount);
 
-            var videos = JsonSerializer.Deserialize<List<Video>>(jsonString, options);
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.AuthToken}");
+                var response = await _httpClient.GetAsync(_configuration["AppSettings:Urls:VideoCatalogue"]);
 
-            return videos;
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var videos = JsonSerializer.Deserialize<List<Video>>(jsonString, options);
+
+                return videos;
+            }
+            catch (HttpRequestException ex)
+            {
+                return null;
+            }
+
         }
 
         public async Task<byte[]> GetVideoFromUrlAsync(string filename)
