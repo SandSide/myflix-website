@@ -13,16 +13,13 @@ namespace myflix_website.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var videos = await _videoService.GetVideoCatalogueAsync();
+            var storedAccount = HttpContext.Session.GetString("Account");
 
-            if(videos != null)
-            {
-                return View(videos);
-            }
-            else
-            {
-                return RedirectToAction("Error");
-            }
+            if (string.IsNullOrEmpty(storedAccount))
+                throw new Exception("Not Logged In");
+
+            var videos = await _videoService.GetVideoCatalogueAsync();
+            return View(videos);
 
         }
 

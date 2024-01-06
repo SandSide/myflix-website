@@ -19,32 +19,26 @@ namespace myflix_website.Services
 
         public async Task<List<Video>> GetVideoCatalogueAsync()
         {
+            // Get account auth token
+            var storedAccount = _httpContextAccessor.HttpContext.Session.GetString("Account");
+            var account = JsonSerializer.Deserialize<AccountModel>(storedAccount);
 
-            try
+            // Send request
+            _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.AuthToken}");
+            var response = await _httpClient.GetAsync(_configuration["AppSettings:Urls:VideoCatalogue"]);
+
+            response.EnsureSuccessStatusCode();
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
             {
-                var storedAccount = _httpContextAccessor.HttpContext.Session.GetString("Account");
-                var account = JsonSerializer.Deserialize<AccountModel>(storedAccount);
+                PropertyNameCaseInsensitive = true
+            };
 
-                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.AuthToken}");
-                var response = await _httpClient.GetAsync(_configuration["AppSettings:Urls:VideoCatalogue"]);
+            var videos = JsonSerializer.Deserialize<List<Video>>(jsonString, options);
 
-                response.EnsureSuccessStatusCode();
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                var videos = JsonSerializer.Deserialize<List<Video>>(jsonString, options);
-
-                return videos;
-            }
-            catch (HttpRequestException ex)
-            {
-                return null;
-            }
+            return videos;
 
         }
 
