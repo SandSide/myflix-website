@@ -4,7 +4,7 @@ namespace myflix_website.Services
 {
     public interface IAuthService
     {
-        Task<string> Login(LoginModel loginModel);
+        Task<AccountModel> Login(LoginModel loginModel);
 
     }
 }

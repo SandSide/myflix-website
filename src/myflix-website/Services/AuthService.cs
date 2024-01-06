@@ -15,7 +15,7 @@ namespace myflix_website.Services
             _configuration = configuration;
         }
 
-        public async Task<String> Login(LoginModel loginModel)
+        public async Task<AccountModel> Login(LoginModel loginModel)
         {
             // Create request
             using StringContent jsonContent = new(
@@ -28,15 +28,16 @@ namespace myflix_website.Services
             if(response.IsSuccessStatusCode)
             {
                 var token = await response.Content.ReadAsStringAsync();
+                var account = new AccountModel { Username = loginModel.Username, Password = loginModel.Password, AuthToken = token };
                 Console.WriteLine($"Token received: {token}");
+
+                return account;
             }
             else
             {
                 Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                return null;
             }
-
-            return null;
-            
         }
     }
 }
