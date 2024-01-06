@@ -9,6 +9,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<IVideoService, VideoService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
 
+
+builder.Services.AddDistributedMemoryCache(); // Use an in-memory cache provider for session state
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout as needed
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -19,6 +29,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthorization();
 
