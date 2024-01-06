@@ -2,6 +2,8 @@
 using myflix_website.Models;
 using myflix_website.Services;
 using System.Net.Http;
+using System.Security.Principal;
+using System.Text.Json;
 
 namespace myflix_website.Controllers
 {
@@ -23,7 +25,6 @@ namespace myflix_website.Controllers
         public async Task<IActionResult> Login()
         {
             return View();
-            //var result = await _authService.Login("hello", "world");
         }
 
         [HttpPost]
@@ -33,13 +34,16 @@ namespace myflix_website.Controllers
 
             if(result != null)
             {
+                // Store logged in account details in session
+                var serializedAccount = JsonSerializer.Serialize(result);
+                HttpContext.Session.SetString("Account", serializedAccount);
+
                 return RedirectToAction("Index", "Home");
             }
             else
             {
                 return View();
             }
-
         }
     }
 }
