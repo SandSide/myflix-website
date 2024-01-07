@@ -48,6 +48,19 @@
             </div>
         </nav>
     </header>
+
+    <!-- Add this script in your view -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var successMessage = '@TempData["SuccessMessage"]';
+
+            if (successMessage) {
+                // Display an alert or perform any other action to show the success message
+                alert(successMessage);
+            }
+        });
+    </script>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
