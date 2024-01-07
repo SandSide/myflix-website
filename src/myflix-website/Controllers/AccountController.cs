@@ -55,10 +55,12 @@ namespace myflix_website.Controllers
 
             if(result == OperationResult.Success) 
             {
+                TempData["SuccessMessage"] = "Registration was successful. You can now log in.";
                 return View("Login");
             }
             else
             {
+                ModelState.AddModelError("", "Registration failed. Please check your information and try again.");
                 return View();
             }
         }
