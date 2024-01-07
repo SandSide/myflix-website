@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using myflix_website.Enums;
 using myflix_website.Models;
 using myflix_website.Services;
 using System.Net.Http;
@@ -50,6 +51,21 @@ namespace myflix_website.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync(RegisterModel registerModel)
+        {
+            var result = await _authService.RegisterAsync(registerModel);
+
+            if(result == OperationResult.Success) 
+            {
+                return View("Login");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }
