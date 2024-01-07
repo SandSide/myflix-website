@@ -45,6 +45,23 @@ namespace myflix_website.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _authService.LogoutAsync();
+
+            if (result == OperationResult.Success)
+            {
+                TempData["SuccessMessage"] = "Logout was successfull. You can now log in.";
+                return View("Login");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Logout failed.");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpGet]
         public IActionResult Register()
         {
             return View();

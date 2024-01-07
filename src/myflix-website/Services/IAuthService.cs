@@ -6,6 +6,9 @@ namespace myflix_website.Services
     public interface IAuthService
     {
         Task<AccountModel> Login(LoginModel loginModel);
+
+        Task<OperationResult> LogoutAsync();
+
         Task<OperationResult> RegisterAsync(RegisterModel registerModel);
     }
 }

@@ -1,4 +1,5 @@
-﻿using myflix_website.Enums;
+﻿using Microsoft.AspNetCore.Mvc;
+using myflix_website.Enums;
 using myflix_website.Models;
 using System.Text;
 using System.Text.Json;
@@ -9,11 +10,13 @@ namespace myflix_website.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(HttpClient httpClient, IConfiguration configuration)
+        public AuthService(HttpClient httpClient, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<AccountModel> Login(LoginModel loginModel)
@@ -39,6 +42,17 @@ namespace myflix_website.Services
                 Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
                 return null;
             }
+        }
+
+        public async Task<OperationResult> LogoutAsync()
+        {
+            if(_httpContextAccessor.HttpContext.Session.Get("Account") != null)
+            {
+                _httpContextAccessor.HttpContext.Session.Remove("Account");
+                return OperationResult.Success;
+            }
+
+            return OperationResult.Failure;
         }
 
         public async Task<OperationResult> RegisterAsync(RegisterModel registerModel)
