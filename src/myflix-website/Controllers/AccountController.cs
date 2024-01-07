@@ -17,11 +17,6 @@ namespace myflix_website.Controllers
             _authService = authService;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         [HttpGet]
         public async Task<IActionResult> Login()
         {
