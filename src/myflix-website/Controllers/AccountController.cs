@@ -34,10 +34,12 @@ namespace myflix_website.Controllers
                 var serializedAccount = JsonSerializer.Serialize(result);
                 HttpContext.Session.SetString("Account", serializedAccount);
 
+                TempData["SuccessMessage"] = "Login was successful. You can now watch videos.";
                 return RedirectToAction("Index", "Home");
             }
             else
             {
+                ModelState.AddModelError("", "Login failed. Please check your information and try again.");
                 return View();
             }
         }
