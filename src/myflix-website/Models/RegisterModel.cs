@@ -9,7 +9,7 @@ namespace myflix_website.Models
         public string Username {  get; set; }
 
         [Required]
-        [Length(6,100)]
+        [StringLength(30, ErrorMessage = "{0} length must be between {2} and {1}.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
