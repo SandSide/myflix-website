@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using myflix_website.Enums;
 using myflix_website.Models;
 using myflix_website.Services;
 using System.Net.Http;
@@ -14,11 +15,6 @@ namespace myflix_website.Controllers
         public AccountController(IAuthService authService) 
         {
             _authService = authService;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
         }
 
         [HttpGet]
@@ -38,10 +34,52 @@ namespace myflix_website.Controllers
                 var serializedAccount = JsonSerializer.Serialize(result);
                 HttpContext.Session.SetString("Account", serializedAccount);
 
+                TempData["SuccessMessage"] = "Login was successful. You can now watch videos.";
                 return RedirectToAction("Index", "Home");
             }
             else
             {
+                ModelState.AddModelError("", "Login failed. Please check your information and try again.");
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _authService.LogoutAsync();
+
+            if (result == OperationResult.Success)
+            {
+                TempData["SuccessMessage"] = "Logout was successfull. You can now log in.";
+                return View("Login");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Logout failed.");
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterAsync(RegisterModel registerModel)
+        {
+            var result = await _authService.RegisterAsync(registerModel);
+
+            if(result == OperationResult.Success) 
+            {
+                TempData["SuccessMessage"] = "Registration was successful. You can now log in.";
+                return View("Login");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Registration failed. Please check your information and try again.");
                 return View();
             }
         }

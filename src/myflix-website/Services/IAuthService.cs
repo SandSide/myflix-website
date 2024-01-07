@@ -1,4 +1,5 @@
-﻿using myflix_website.Models;
+﻿using myflix_website.Enums;
+using myflix_website.Models;
 
 namespace myflix_website.Services
 {
@@ -6,5 +7,8 @@ namespace myflix_website.Services
     {
         Task<AccountModel> Login(LoginModel loginModel);
 
+        Task<OperationResult> LogoutAsync();
+
+        Task<OperationResult> RegisterAsync(RegisterModel registerModel);
     }
 }

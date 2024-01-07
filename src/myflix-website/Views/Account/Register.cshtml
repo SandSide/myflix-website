@@ -1,15 +1,26 @@
-﻿@model myflix_website.Models.LoginModel
+﻿@model myflix_website.Models.RegisterModel
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Register";
 }
 
-<h1>Login</h1>
+<h1>Register</h1>
 
-<hr />
+<hr/>
+
+<p>Password Criteria:</p>
+<ul>
+    <li>Min 6 characters</li>
+    <li>Min 1 upper case character</li>
+    <li>Min 1 lower case character</li>
+    <li>Min 1 number</li>
+    <li>Min 1 special character</li>
+</ul>
+
+
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Login">
+        <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
@@ -22,13 +33,12 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Login" class="btn btn-primary" />
+                <input type="submit" value="Register" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<p>Not registered? @Html.ActionLink("Register Here", "Register")</p>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
