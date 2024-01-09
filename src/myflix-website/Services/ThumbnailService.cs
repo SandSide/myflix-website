@@ -28,20 +28,24 @@ namespace myflix_website.Services
 
             List<string> imgList = new List<string>();
 
-            foreach(var id in videoIds)
-            {
-                var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Thumbnails"]}/{id}.jpg");
+            string defaultThumbnailPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "defaultThumbnail.jpg");
+            byte[] defaultThumbnailBytes = File.ReadAllBytes(defaultThumbnailPath);
+            string defaultThumbnailBase64 = Convert.ToBase64String(defaultThumbnailBytes);
 
-                if (response.IsSuccessStatusCode)
+            foreach (var id in videoIds)
+            {
+                try
                 {
+                    var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Thumbnails"]}/{id}.jpg");
+                    response.EnsureSuccessStatusCode();
+
                     byte[] thumbnailBytes = await response.Content.ReadAsByteArrayAsync();
                     string thumbnail = Convert.ToBase64String(thumbnailBytes);
                     imgList.Add(thumbnail);
                 }
-                else
+                catch(Exception ex)
                 {
-                    Console.WriteLine("Failed to get thumbnail");
-                    imgList.Add("/Content/defaultThumbnail.jpg"); 
+                    imgList.Add(defaultThumbnailBase64);
                 }
             }
 
