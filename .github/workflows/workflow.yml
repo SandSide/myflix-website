@@ -37,5 +37,6 @@ jobs:
                 script: |
                     docker stop myflix-website
                     docker rm myflix-website
+                    docker rmi sandside/myflix:website
                     docker pull sandside/myflix:website
                     docker run -d -p 80:8080 --restart=always --name myflix-website sandside/myflix:website
