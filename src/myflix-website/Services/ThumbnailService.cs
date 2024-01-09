@@ -17,7 +17,7 @@ namespace myflix_website.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> GetVideoThumbnailAsync(string videoId)
+        public async Task<List<string>> GetVideoThumbnailsAsync(List<string> videoIds)
         {
             // Get account auth token
             var storedAccount = _httpContextAccessor.HttpContext.Session.GetString("Account");
@@ -25,16 +25,27 @@ namespace myflix_website.Services
 
             // Send request
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {account.AuthToken}");
-            var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Thumbnails"]}/{videoId}.jpg");
 
-            if (response.IsSuccessStatusCode)
+            List<string> imgList = new List<string>();
+
+            foreach(var id in videoIds)
             {
-                return await response.Content.ReadAsStringAsync();
+                var response = await _httpClient.GetAsync($"{_configuration["AppSettings:Urls:Thumbnails"]}/{id}.jpg");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    byte[] thumbnailBytes = await response.Content.ReadAsByteArrayAsync();
+                    string thumbnail = Convert.ToBase64String(thumbnailBytes);
+                    imgList.Add(thumbnail);
+                }
+                else
+                {
+                    Console.WriteLine("Failed to get thumbnail");
+                    imgList.Add("/Content/defaultThumbnail.jpg"); 
+                }
             }
-            else
-            {
-                return null;
-            }
+
+            return imgList;
         }
     }
 }

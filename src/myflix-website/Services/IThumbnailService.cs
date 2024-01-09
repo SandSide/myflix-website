@@ -1,7 +1,9 @@
-﻿namespace myflix_website.Services
+﻿using myflix_website.Models;
+
+namespace myflix_website.Services
 {
     public interface IThumbnailService
     {
-        Task<string> GetVideoThumbnailAsync(string videoId);
+        Task<List<string>> GetVideoThumbnailsAsync(List<string> videoIds);
     }
 }

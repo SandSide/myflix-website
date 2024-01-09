@@ -8,7 +8,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHttpClient<IVideoService, VideoService>();
 builder.Services.AddHttpClient<IAuthService, AuthService>();
-
+builder.Services.AddHttpClient<IThumbnailService, ThumbnailService>();
 
 builder.Services.AddDistributedMemoryCache(); // Use an in-memory cache provider for session state
 builder.Services.AddSession(options =>

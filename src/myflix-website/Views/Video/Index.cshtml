@@ -39,9 +39,10 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Length)
             </td>
-  @*           <td>
-                @Html.DisplayFor(modelItem => item.VideoUrl)
-            </td> *@
+            <td>
+                @* <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[0]}")" alt="Thumbnail"> *@
+
+            </td>
             <td>
                     @Html.ActionLink("Watch", "Watch", new { filename = item.VideoUrl })
             </td>
@@ -49,3 +50,12 @@
 }
     </tbody>
 </table>
+
+@if (!string.IsNullOrEmpty(ViewBag.ImageUrls[1]))
+{
+    <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[1]}")" alt="Thumbnail">
+}
+else
+{
+    <p>No Image Available</p>
+}
