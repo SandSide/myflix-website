@@ -6,9 +6,11 @@ namespace myflix_website.Controllers
     public class VideoController : Controller
     {
         private readonly IVideoService _videoService;
+        private readonly IThumbnailService  _thumbnailService;
 
-        public VideoController(IVideoService videoService) { 
+        public VideoController(IVideoService videoService, IThumbnailService thumbnailService) { 
             _videoService = videoService;
+            _thumbnailService = thumbnailService;
         }
 
         public async Task<IActionResult> Index()
@@ -19,6 +21,11 @@ namespace myflix_website.Controllers
                 throw new Exception("Not Logged In");
 
             var videos = await _videoService.GetVideoCatalogueAsync();
+
+            var videoIds = videos.Select(video => video.Id.ToString()).ToList();
+
+            ViewBag.ImageUrls = await _thumbnailService.GetVideoThumbnailsAsync(videoIds);
+
             return View(videos);
 
         }
