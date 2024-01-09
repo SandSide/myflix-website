@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<myflix_website.Models.Video>
 
 @{
+    int index = 0;
     ViewData["Title"] = "Index";
 }
 
@@ -25,6 +26,7 @@
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model) {
         <tr>
             <td>
@@ -40,8 +42,10 @@
                 @Html.DisplayFor(modelItem => item.Length)
             </td>
             <td>
-                @* <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[0]}")" alt="Thumbnail"> *@
-
+                <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[index]}")" alt="Thumbnail">
+                @{
+                    index++;
+                }
             </td>
             <td>
                     @Html.ActionLink("Watch", "Watch", new { filename = item.VideoUrl })
@@ -50,12 +54,3 @@
 }
     </tbody>
 </table>
-
-@if (!string.IsNullOrEmpty(ViewBag.ImageUrls[1]))
-{
-    <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[1]}")" alt="Thumbnail">
-}
-else
-{
-    <p>No Image Available</p>
-}
