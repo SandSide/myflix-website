@@ -7,50 +7,26 @@
 
 <h1>Videos</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Length)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Length)
-            </td>
-            <td>
-                <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[index]}")" alt="Thumbnail">
-                @{
-                    index++;
-                }
-            </td>
-            <td>
+<div class="row gap-1">
+    @{
+        @foreach (var item in Model)
+        {
+            <div class="card col-3" style="width: 18rem;">
+                <img src="@($"data:image/jpeg;base64,{ViewBag.ImageUrls[index]}")" class="card-img-top" alt="Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @Html.DisplayFor(model => item.Title)
+                    </h5>
+                    <p class="card-text">
+                        @Html.DisplayFor(model => item.Description)
+                    </p>
+                    <p><strong>Length</strong>: @Html.DisplayFor(model => item.Length)s</p>
+                    <p><strong>Author</strong>: @Html.DisplayFor(model => item.Author)</p>
                     @Html.ActionLink("Watch", "Watch", new { filename = item.VideoUrl })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                </div>
+            </div>
+
+            index++;
+        }
+    }
+</div>
