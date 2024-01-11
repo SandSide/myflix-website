@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Watch Video";
+}
+
+@{
+    var videoBase64 = ViewBag.VideoBase64;
+    var videoSrc = $"data:video/mp4;base64,{videoBase64}";
+}
+
+
+<video controls class="video-container">
+    <source src="@videoSrc" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+<h2>Name</h2>
+<div class="video-data-container p-3">
+    <p>Description</p>
+</div>
+
+
