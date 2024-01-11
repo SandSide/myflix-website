@@ -22,5 +22,14 @@ body {
 }
 
 .video-container{
-    width: 40rem;
+/*    width: 40rem;*/
+    height: 30rem;
+    width: 100%;
+    background-color: black;
+}
+
+.video-data-container {
+    width: 100%;
+    border: 2px solid black;
+    border-radius: 1rem;
 }
